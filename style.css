@@ -2,3 +2,10 @@ body {
   font-family: Arial, sans-serif;
   padding: 20px;
 }
+
+#canvas {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  min-height: 200px;
+  padding: 10px;
+}
