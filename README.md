@@ -20,3 +20,6 @@ for Problem 11 (a–e).
 - No direct commits to `main`
 - All changes via Pull Requests
 - One feature or fix per PR
+## Team Rules
+-Every change must be merged via Pull Requesrs
+-
