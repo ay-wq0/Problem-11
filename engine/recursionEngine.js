@@ -40,7 +40,7 @@ function createRunner({ animate = false, ctx = null, delay = 0 }) {
       for (const next of nextStates) {
         const sub = animate
           ? await recurse(next, depth + 1)
-          : recurse(next, depth + 1);
+          : await recurse(next, depth + 1);
         results = results.concat(sub);
       }
 
@@ -48,9 +48,8 @@ function createRunner({ animate = false, ctx = null, delay = 0 }) {
     }
 
     const initial = problem.initialState();
-    const results = animate
-      ? await recurse(initial)
-      : recurse(initial);
+    // Always await recurse since it's async (prevents metrics from finishing early)
+    const results = await recurse(initial);
 
     metrics.end();
     metrics.log(problem.name, algorithmType);
