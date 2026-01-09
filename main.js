@@ -12,18 +12,18 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 // Helper function to run a problem (both brute & optimized)
-function runProblem(problem) {
+async function runProblem(problem) {
   console.clear();
   console.log(`=== Running ${problem.name} ===`);
-  recursionEngine.run(problem, "brute");
-  recursionEngine.run(problem, "optimized");
+  await recursionEngine.run(problem, "brute");
+  await recursionEngine.run(problem, "optimized");
 }
 
 // Helper function to animate a problem
-function animateProblem(problem, algorithm = "brute") {
+async function animateProblem(problem, algorithm = "brute") {
   console.clear();
   console.log(`=== Animating ${problem.name} (${algorithm}) ===`);
-  recursionEngine.runAnimated(problem, ctx, algorithm, 700);
+  await recursionEngine.runAnimated(problem, ctx, algorithm, 700);
 }
 
 // Map buttons
