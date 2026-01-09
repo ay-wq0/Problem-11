@@ -1,32 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8" />
-  <title>Problem 11 – AI Reasoning Framework</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Problem 11 AI Test</title>
 </head>
 <body>
 
-  <h1>Problem 11 (a–e)</h1>
+  <h2>Problem 11 AI Test</h2>
 
-  <select id="problemSelect">
-    <option value="cards">Cards & Coins</option>
-    <option value="pirates">Ten Pirates</option>
-    <option value="handshake">Handshake</option>
-    <option value="airline">Airline Seats</option>
-    <option value="birthday">Birthday Problem</option>
-  </select>
+  <h3>Run (no animation)</h3>
+  <button id="run-cards">Cards / Coins</button>
+  <button id="run-pirates">Ten Pirates</button>
+  <button id="run-handshake">Handshake</button>
+  <button id="run-airline">Airline Seats</button>
+  <button id="run-birthday">Birthday</button>
 
-  <select id="algorithmSelect">
-    <option value="brute">Brute Recursive</option>
-    <option value="optimized">Optimized Recursive</option>
-  </select>
+  <h3>Run (animated, brute)</h3>
+  <button id="animate-cards">Animate Cards</button>
+  <button id="animate-pirates">Animate Pirates</button>
+  <button id="animate-handshake">Animate Handshake</button>
+  <button id="animate-airline">Animate Airline</button>
+  <button id="animate-birthday">Animate Birthday</button>
 
-  <button id="runBtn">Run</button>
+  <br /><br />
 
-  <div id="canvas"></div>
-  <pre id="metrics"></pre>
+  <canvas id="canvas" width="600" height="200" style="border:1px solid black"></canvas>
 
-  <script type="module" src="main.js"></script>
+  <script type="module" src="./main.js"></script>
 </body>
 </html>
