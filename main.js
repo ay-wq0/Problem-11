@@ -1,2 +1,8 @@
-// Entry point for Problem 11 framework
-console.log("Problem 11 framework loaded");
+import { runProblem } from "./engine/recursionEngine.js";
+
+document.getElementById("runBtn").onclick = () => {
+  const problem = document.getElementById("problemSelect").value;
+  const algorithm = document.getElementById("algorithmSelect").value;
+
+  runProblem(problem, algorithm);
+};
