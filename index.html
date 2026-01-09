@@ -2,12 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Problem 11 – AI Recursive Reasoning</title>
+  <title>Problem 11 – AI Reasoning Framework</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Problem 11 – Recursive Reasoning Framework</h1>
-  <div id="app"></div>
-  <script src="main.js"></script>
+
+  <h1>Problem 11 (a–e)</h1>
+
+  <select id="problemSelect">
+    <option value="cards">Cards & Coins</option>
+    <option value="pirates">Ten Pirates</option>
+    <option value="handshake">Handshake</option>
+    <option value="airline">Airline Seats</option>
+    <option value="birthday">Birthday Problem</option>
+  </select>
+
+  <select id="algorithmSelect">
+    <option value="brute">Brute Recursive</option>
+    <option value="optimized">Optimized Recursive</option>
+  </select>
+
+  <button id="runBtn">Run</button>
+
+  <div id="canvas"></div>
+  <pre id="metrics"></pre>
+
+  <script type="module" src="main.js"></script>
 </body>
 </html>
