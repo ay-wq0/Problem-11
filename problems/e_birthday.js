@@ -1,49 +1,59 @@
-// problems/e_birthday.js
+// Birthday Assignment Problem
+// ---------------------------
+// Assign unique birthdays to people.
+// If two people share a birthday, the state is invalid.
+//
+// This demonstrates constraint satisfaction and pruning.
 
 export default {
-  name: "Birthday Problem",
+  name: "Birthday Assignment",
 
-  nPeople: 3, // small demo
-  nDays: 3,   // total possible birthdays
+  description:
+    "Birthdays are assigned one person at a time. States that contain duplicate birthdays are pruned early.",
+
+  useVisited: false,
 
   initialState() {
-    return Array(this.nPeople).fill(null); // null = birthday not assigned
+    return { nPeople: 4, nDays: 5, birthdays: [] };
   },
 
-  isGoal(state) {
-    return state.every((b) => b !== null);
+  stateKey(s) {
+    return s.birthdays.join(",");
   },
 
-  getNextStates(state) {
-    const nextStates = [];
-    const nextPerson = state.indexOf(null);
-    if (nextPerson === -1) return nextStates;
+  prune(s) {
+    // If duplicates exist, stop exploring this path
+    return new Set(s.birthdays).size !== s.birthdays.length;
+  },
 
-    for (let day = 1; day <= this.nDays; day++) {
-      const newState = [...state];
-      newState[nextPerson] = day;
-      nextStates.push(newState);
+  isGoal(s) {
+    return s.birthdays.length === s.nPeople;
+  },
+
+  getNextStates(s) {
+    const next = [];
+    for (let d = 1; d <= s.nDays; d++) {
+      next.push({ ...s, birthdays: [...s.birthdays, d] });
     }
-
-    return nextStates;
+    return next;
   },
 
-  renderState(state, ctx) {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.font = "20px monospace";
-    ctx.fillStyle = "black";
-    ctx.fillText(
-      `Birthdays: ${state.map((b) => (b === null ? "-" : b)).join(", ")}`,
-      20,
-      100
-    );
+  liveExplanation(state) {
+    return `Assigned birthdays to ${state.birthdays.length} person(s). Checking for duplicates.`;
   },
 
-  prune(state) {
-    return false;
-  },
-
-  isGuaranteedGoal(state) {
-    return this.isGoal(state);
-  },
+  renderState(s, ctx) {
+    s.birthdays.forEach((day, i) => {
+      const x = 120 + i * 180;
+      const y = 220;
+      ctx.beginPath();
+      ctx.arc(x, y, 30, 0, Math.PI * 2);
+      ctx.fillStyle = "lightblue";
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = "black";
+      ctx.fillText(`P${i}`, x - 10, y - 40);
+      ctx.fillText(`D${day}`, x - 10, y + 5);
+    });
+  }
 };

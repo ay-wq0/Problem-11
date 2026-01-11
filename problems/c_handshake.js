@@ -1,73 +1,69 @@
-// problems/c_handshake.js
-
 export default {
-  name: "Handshakes Among n People",
+  name: "Handshakes",
 
-  // Set the number of people
-  n: 4, // you can change this number to test bigger groups
+  description:
+    "Everyone must shake hands with everyone else one time. If the same handshake happens twice, that path is wrong.",
 
-  // Starting state: no handshakes yet
+  useVisited: true,
+
   initialState() {
-    return {
-      people: Array(this.n).fill(0), // 0 = hasn't shaken hands
-      handshakes: [] // list of handshake pairs
-    };
+    return { people: 4, handshakes: [] };
   },
 
-  // Goal: all possible pairs have shaken hands
-  isGoal(state) {
-    const totalPairs = (this.n * (this.n - 1)) / 2;
-    return state.handshakes.length === totalPairs;
+  stateKey(s) {
+    return s.handshakes
+      .map(h => h.join("-"))
+      .sort()
+      .join("|");
   },
 
-  // Generate all next states by adding one new handshake
-  getNextStates(state) {
-    const nextStates = [];
-    const n = this.n;
+  isGoal(s) {
+    return s.handshakes.length === (s.people * (s.people - 1)) / 2;
+  },
 
-    // Find all pairs who haven't shaken yet
-    for (let i = 0; i < n; i++) {
-      for (let j = i + 1; j < n; j++) {
-        const exists = state.handshakes.some(
-          ([a, b]) =>
-            (a === i && b === j) || (a === j && b === i)
-        );
-        if (!exists) {
-          // create new state with this handshake added
-          const newState = {
-            people: [...state.people],
-            handshakes: [...state.handshakes, [i, j]]
-          };
-          nextStates.push(newState);
+  getNextStates(s) {
+    const next = [];
+    const done = new Set(s.handshakes.map(h => h.join(",")));
+
+    for (let i = 0; i < s.people; i++) {
+      for (let j = i + 1; j < s.people; j++) {
+        const key = `${i},${j}`;
+        if (!done.has(key)) {
+          next.push({
+            ...s,
+            handshakes: [...s.handshakes, [i, j]]
+          });
         }
       }
     }
-
-    return nextStates;
+    return next;
   },
 
-  // Render state on canvas (text-based)
-  renderState(state, ctx) {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.font = "20px monospace";
-    ctx.fillStyle = "black";
-
-    ctx.fillText(
-      `Handshakes: ${state.handshakes
-        .map(pair => `[${pair[0]},${pair[1]}]`)
-        .join(" ")}`,
-      20,
-      50
-    );
+  liveExplanation(state) {
+    return `Handshakes done so far: ${state.handshakes.length}`;
   },
 
-  // Optional pruning: skip states with duplicate handshakes (already handled)
-  prune(state) {
-    return false;
-  },
+  renderState(s, ctx) {
+    const y = 200;
+    const space = 180;
 
-  // Optional early stop: if goal reached, return immediately
-  isGuaranteedGoal(state) {
-    return this.isGoal(state);
-  },
+    const pos = Array.from({ length: s.people }, (_, i) => ({
+      x: 120 + i * space,
+      y
+    }));
+
+    pos.forEach((p, i) => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 25, 0, Math.PI * 2);
+      ctx.fillStyle = "lightblue";
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = "black";
+      ctx.fillText(`P${i}`, p.x - 10, p.y + 5);
+    });
+
+    s.handshakes.forEach(([i, j], idx) => {
+      ctx.fillText(`P${i} ↔ P${j}`, 300, 260 + idx * 25);
+    });
+  }
 };

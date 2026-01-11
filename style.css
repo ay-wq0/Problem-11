@@ -1,11 +1,28 @@
 body {
   font-family: Arial, sans-serif;
-  padding: 20px;
 }
 
-#canvas {
-  margin-top: 20px;
-  border: 1px solid #ccc;
-  min-height: 200px;
+#controls {
+  margin-bottom: 10px;
+}
+
+button, select {
+  margin-right: 6px;
+}
+
+canvas {
+  border: 1px solid black;
+  margin-top: 10px;
+}
+
+#infoPanel {
+  margin-top: 10px;
   padding: 10px;
+  border: 1px solid #aaa;
+  background: #f9f9f9;
+}
+
+#status {
+  margin: 6px 0;
+  font-weight: bold;
 }
