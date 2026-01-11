@@ -1,13 +1,34 @@
-// engine/animationEngine.js
-import recursionEngine from "./recursionEngine.js";
+import createRunner from "./recursionEngine.js";
 
 export default {
-  animate(problem, ctx, algorithmType = "brute", delay = 200) {
-    return recursionEngine.runAnimated(
-      problem,
+  animateComparison(problem, ctx, status, ui) {
+    const left = createRunner({
       ctx,
-      algorithmType,
-      delay
-    );
-  },
+      offsetX: 0,
+      width: ctx.canvas.width / 2,
+      algorithmType: "brute",
+      label: "Brute DFS",
+      status,
+      ui
+    });
+
+    const right = createRunner({
+      ctx,
+      offsetX: ctx.canvas.width / 2,
+      width: ctx.canvas.width / 2,
+      algorithmType: "optimized",
+      label: "Optimized DFS",
+      status,
+      ui
+    });
+
+    left.run(problem);
+    right.run(problem);
+
+    return {
+      stop() { left.stop(); right.stop(); },
+      pause() { left.pause(); right.pause(); },
+      resume() { left.resume(); right.resume(); }
+    };
+  }
 };

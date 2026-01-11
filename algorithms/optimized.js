@@ -1,28 +1,20 @@
-// algorithms/optimized.js
 export default {
-  name: "Optimized Search",
+  name: "Optimized DFS",
 
-  /**
-   * Return pruned next states
-   * Optimization rules are generic and safe
-   */
-  nextStates(problem, state) {
-    let nextStates = problem.getNextStates(state);
+  description:
+    "This method is smarter. Before going deeper, it checks if a choice is already wrong. If it is wrong, it stops early and does not continue that path.",
 
-    // 1️⃣ Optional problem-specific pruning hook
-    if (typeof problem.prune === "function") {
-      nextStates = nextStates.filter((s) => !problem.prune(s));
+  nextStates(problem, state, onPrune) {
+    let states = problem.getNextStates(state);
+
+    if (problem.prune) {
+      states = states.filter(s => {
+        const badChoice = problem.prune(s);
+        if (badChoice) onPrune?.();
+        return !badChoice;
+      });
     }
 
-    // 2️⃣ Optional early stopping hook
-    if (typeof problem.isGuaranteedGoal === "function") {
-      for (const s of nextStates) {
-        if (problem.isGuaranteedGoal(s)) {
-          return [s];
-        }
-      }
-    }
-
-    return nextStates;
-  },
+    return states;
+  }
 };

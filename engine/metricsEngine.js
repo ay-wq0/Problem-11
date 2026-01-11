@@ -1,52 +1,15 @@
-// engine/metricsEngine.js
+// MetricsEngine
+// --------------
+// Tracks what the algorithm is doing so we can compare efficiency.
+
 export default class MetricsEngine {
   constructor() {
-    this.reset();
+    this.steps = 0;    // total recursive calls
+    this.visited = 0;  // unique states explored
+    this.pruned = 0;   // branches stopped early
   }
 
-  reset() {
-    this.recursiveCalls = 0;
-    this.maxDepth = 0;
-    this.statesExplored = 0;
-    this.startTime = null;
-    this.endTime = null;
-  }
-
-  start() {
-    this.startTime = performance.now();
-  }
-
-  end() {
-    this.endTime = performance.now();
-  }
-
-  recordCall(depth) {
-    this.recursiveCalls++;
-    this.maxDepth = Math.max(this.maxDepth, depth);
-  }
-
-  recordStates(count) {
-    this.statesExplored += count;
-  }
-
-  snapshot() {
-    return {
-      recursiveCalls: this.recursiveCalls,
-      maxDepth: this.maxDepth,
-      statesExplored: this.statesExplored,
-      timeElapsed:
-        this.startTime && this.endTime
-          ? (this.endTime - this.startTime).toFixed(2)
-          : null,
-    };
-  }
-
-  log(problemName, algorithmName) {
-    const m = this.snapshot();
-    console.log(`📊 ${problemName} — ${algorithmName}`);
-    console.log(`Recursive calls: ${m.recursiveCalls}`);
-    console.log(`Max depth: ${m.maxDepth}`);
-    console.log(`States explored: ${m.statesExplored}`);
-    console.log(`Time elapsed: ${m.timeElapsed} ms`);
-  }
+  recordStep() { this.steps++; }
+  recordVisited() { this.visited++; }
+  recordPruned() { this.pruned++; }
 }

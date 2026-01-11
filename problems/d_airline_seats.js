@@ -1,54 +1,51 @@
-// problems/d_airline_seats.js
-
 export default {
-  name: "Airline Seats",
+  name: "Seat Assignment",
 
-  nSeats: 3, // small demo
-  nPassengers: 3,
+  description:
+    "Each passenger must pick one seat. A seat can only be used once. The order matters.",
+
+  useVisited: false,
 
   initialState() {
-    return {
-      seats: Array(this.nSeats).fill(null), // null = empty
-      nextPassenger: 0,
-    };
+    return { seats: 4, occupied: [] };
   },
 
-  isGoal(state) {
-    return state.nextPassenger >= this.nPassengers;
+  stateKey(s) {
+    return s.occupied.join(",");
   },
 
-  getNextStates(state) {
-    const nextStates = [];
-    for (let i = 0; i < this.nSeats; i++) {
-      if (state.seats[i] === null) {
-        const newSeats = [...state.seats];
-        newSeats[i] = state.nextPassenger;
-        nextStates.push({
-          seats: newSeats,
-          nextPassenger: state.nextPassenger + 1,
+  isGoal(s) {
+    return s.occupied.length === s.seats;
+  },
+
+  getNextStates(s) {
+    const next = [];
+    for (let i = 0; i < s.seats; i++) {
+      if (!s.occupied.includes(i)) {
+        next.push({
+          ...s,
+          occupied: [...s.occupied, i]
         });
       }
     }
-    return nextStates;
+    return next;
   },
 
-  renderState(state, ctx) {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.font = "20px monospace";
-    ctx.fillStyle = "black";
-    ctx.fillText(
-      `Seats: ${state.seats.map((p) => (p === null ? "-" : p)).join(" ")}`,
-      20,
-      100
-    );
-    ctx.fillText(`Next passenger: ${state.nextPassenger}`, 20, 130);
+  liveExplanation(state) {
+    return `Passenger ${state.occupied.length} is choosing a seat.`;
   },
 
-  prune(state) {
-    return false;
-  },
-
-  isGuaranteedGoal(state) {
-    return this.isGoal(state);
-  },
+  renderState(s, ctx) {
+    const y = 220;
+    for (let i = 0; i < s.seats; i++) {
+      const x = 80 + i * 140;
+      ctx.fillStyle = s.occupied.includes(i)
+        ? "green"
+        : "lightgray";
+      ctx.fillRect(x, y, 80, 50);
+      ctx.strokeRect(x, y, 80, 50);
+      ctx.fillStyle = "black";
+      ctx.fillText(`Seat ${i}`, x + 18, y + 30);
+    }
+  }
 };

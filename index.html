@@ -1,31 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Problem 11 AI Test</title>
+  <title>Algorithms, Explained Visually</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <h2>Problem 11 AI Test</h2>
+<h1>Recursive AI Reasoning Visualizer</h1>
 
-  <h3>Run (no animation)</h3>
-  <button id="run-cards">Cards / Coins</button>
-  <button id="run-pirates">Ten Pirates</button>
-  <button id="run-handshake">Handshake</button>
-  <button id="run-airline">Airline Seats</button>
-  <button id="run-birthday">Birthday</button>
+<div id="controls">
+  <select id="problemSelect">
+    <option value="cards">Cards / Coins</option>
+    <option value="birthday">Birthday</option>
+    <option value="airline">Seat Assignment</option>
+    <option value="handshake">Handshakes</option>
+    <option value="tenPirates">Ten Pirates</option>
+  </select>
 
-  <h3>Run (animated, brute)</h3>
-  <button id="animate-cards">Animate Cards</button>
-  <button id="animate-pirates">Animate Pirates</button>
-  <button id="animate-handshake">Animate Handshake</button>
-  <button id="animate-airline">Animate Airline</button>
-  <button id="animate-birthday">Animate Birthday</button>
+  <button id="run">Run</button>
+  <button id="pause">Pause</button>
+  <button id="resume">Resume</button>
 
-  <br /><br />
+  <label>
+    <input type="checkbox" id="narrationToggle" />
+    Step-by-Step Narration
+  </label>
 
-  <canvas id="canvas" width="600" height="200" style="border:1px solid black"></canvas>
+  <button id="nextStep">Next Step</button>
+</div>
 
-  <script type="module" src="./main.js"></script>
+<div id="status"></div>
+
+<canvas id="canvas" width="2000" height="520"></canvas>
+
+<div id="infoPanel">
+  <h3>Problem</h3>
+  <p id="problemDesc"></p>
+
+  <h3>Algorithm</h3>
+  <p id="algorithmDesc"></p>
+
+  <h3>Narration</h3>
+  <p id="liveExplain"></p>
+</div>
+
+<script type="module" src="main.js"></script>
 </body>
 </html>

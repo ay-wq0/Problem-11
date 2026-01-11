@@ -1,13 +1,10 @@
-// algorithms/brute.js
 export default {
-  name: "Brute Force",
+  name: "Brute DFS",
 
-  /**
-   * Return ALL possible next states
-   * No pruning, no shortcuts
-   */
+  description:
+    "This method tries everything. It does not stop early. It does not avoid mistakes. It goes down every possible path until it reaches the end.",
+
   nextStates(problem, state) {
-    // Direct delegation to the problem definition
     return problem.getNextStates(state);
-  },
+  }
 };
