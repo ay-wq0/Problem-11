@@ -186,14 +186,20 @@ No external libraries required.
 
 ## 👥 Contributors
 
-This is a **group project**.
-Each member is responsible for understanding and being able to explain the full system.
+This is *Group 6*.
 
-
-* **Contributor 1:** *Full Name* — *Student ID*
-* **Contributor 2:** *Full Name* — *Student ID*
-* **Contributor 3:** *Full Name* — *Student ID*
-* **Contributor 4:** *Full Name* — *Student ID*
+1.Sadiq Umar Aliyu-20232164
+2.Ahmed Ibrahim Mabudi-20230926
+3.Godswill Ikoedem Akpan-20231268
+4. Abubakar Bashir Largema-20233259
+5.Khalid Ahmed hamidu-241090174
+6.Abba-Yahaya Abdullahi-20230848
+7.Ridwan Mahmoud-20232464
+8.Abdulsamad Mohammed-20230932
+9.Ahmad Aminu Abubakar-20232370
+10.Zakari Musa-20221363
+11.Shafiu Muhammad Muttaka-20231005
+12.Faisal Mato-20233274
 
 ---
 
