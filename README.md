@@ -188,18 +188,18 @@ No external libraries required.
 
 This is *Group 6*.
 
-1.SadiqUmarAliyu-20232164
-2.AhmedIbrahimMabudi-20230926
-3.GodswillIkoedemAkpan-20231268
-4. AbubakarBashirLargema-20233259
-5.KhalidAhmedhamidu-241090174
-6.Abba-YahayaAbdullahi-20230848
-7.RidwanMahmoud-20232464
-8.AbdulsamadMohammed-20230932
-9.AhmadAminuAbubakar-20232370
-10.ZakariMusa-20221363
-11.ShafiuMuhammadMuttaka-20231005
-12.FaisalMato-20233274
+1.Sadiq Umar Aliyu-20232164
+2.Ahmed Ibrahim Mabudi-20230926
+3.Godswill Ikoedem Akpan-20231268
+4. Abubakar Bashir Largema-20233259
+5.Khalid Ahmed hamidu-241090174
+6.Abba-Yahaya Abdullahi-20230848
+7.Ridwan Mahmoud-20232464
+8.Abdulsamad Mohammed-20230932
+9.Ahmad Aminu Abubakar-20232370
+10.Zakari Musa-20221363
+11.Shafiu Muhammad Muttaka-20231005
+12.Faisal Mato-20233274
 
 ---
 
