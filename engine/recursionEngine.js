@@ -57,6 +57,13 @@ export default function createRunner({
         problem.liveExplanation?.(state, depth) ||
         "Trying the next possible choice.";
     }
+      let results = [];
+      for (const next of nextStates) {
+        const sub = animate
+          ? await recurse(next, depth + 1)
+          : await recurse(next, depth + 1);
+        results = results.concat(sub);
+      }
 
     if (ui?.narration.checked) {
       paused = true;
