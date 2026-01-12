@@ -2,6 +2,7 @@ import MetricsEngine from "./metricsEngine.js";
 import brute from "../algorithms/brute.js";
 import optimized from "../algorithms/optimized.js";
 
+const MAX_STEPS = 5000;
 const algos = { brute, optimized };
 
 export default function createRunner({
@@ -11,7 +12,8 @@ export default function createRunner({
   algorithmType,
   label,
   status,
-  ui
+  ui,
+  totalSteps
 }) {
   const algorithm = algos[algorithmType];
   const metrics = new MetricsEngine();
@@ -19,11 +21,18 @@ export default function createRunner({
 
   let stopped = false;
   let paused = false;
+  const getDelay = ui?.getDelay || (() => 40);
 
-  async function recurse(problem, state, depth = 0) {
+  async function recurse(problem, state) {
     if (stopped) return;
 
-    if (problem.useVisited !== false) {
+    if (metrics.steps >= MAX_STEPS) {
+      stopped = true;
+      status.textContent = `${label} stopped (MAX_STEPS reached)`;
+      return;
+    }
+
+    if (problem.useVisited) {
       const key = problem.stateKey(state);
       if (visited.has(key)) return;
       visited.add(key);
@@ -34,70 +43,66 @@ export default function createRunner({
 
     ctx.save();
     ctx.translate(offsetX, 0);
-    ctx.clearRect(0, 0, width, ctx.canvas.height);
-    problem.renderState(state, ctx, algorithmType);
+
+    // soft fade
+    ctx.fillStyle = "rgba(255,255,255,0.85)";
+    ctx.fillRect(0, 0, width, ctx.canvas.height);
+
+    if (problem.isGoal(state)) {
+      ctx.fillStyle = "rgba(0,255,0,0.12)";
+      ctx.fillRect(0, 0, width, ctx.canvas.height);
+    }
+
+    problem.renderState(state, ctx);
 
     ctx.fillStyle = "black";
-    ctx.font = "26px monospace";
+    ctx.font = "20px monospace";
     ctx.fillText(label, 10, 20);
-    ctx.fillText(`Steps: ${metrics.steps}`, 10, 40);
-    ctx.fillText(`Visited: ${metrics.visited}`, 10, 60);
-    ctx.fillText(`Pruned: ${metrics.pruned}`, 10, 80);
+    ctx.fillText(
+      `Steps: ${metrics.steps} / ${totalSteps}`,
+      10,
+      45
+    );
     ctx.restore();
 
-    if (status) {
-      status.textContent =
-        `${label} | Steps: ${metrics.steps} | Visited: ${metrics.visited} | Stopped Early: ${metrics.pruned}`;
-    }
+    ui.problemDesc.textContent = problem.description;
+    ui.algorithmDesc.textContent = algorithm.description;
+    ui.liveExplain.textContent =
+      problem.liveExplanation?.(state) || "";
 
-    if (ui) {
-      ui.problemDesc.textContent = problem.description;
-      ui.algorithmDesc.textContent = algorithm.description;
-      ui.liveExplain.textContent =
-        problem.liveExplanation?.(state, depth) ||
-        "Trying the next possible choice.";
-    }
-      let results = [];
-      for (const next of nextStates) {
-        const sub = animate
-          ? await recurse(next, depth + 1)
-          : await recurse(next, depth + 1);
-        results = results.concat(sub);
-      }
-
-    if (ui?.narration.checked) {
-      paused = true;
-      await new Promise(res => {
-        ui.nextBtn.onclick = () => {
-          paused = false;
-          res();
-        };
-      });
-    }
+    await new Promise(r => setTimeout(r, getDelay()));
 
     while (paused && !stopped) {
-      await new Promise(r => setTimeout(r, 100));
+      await new Promise(r => setTimeout(r, 50));
     }
 
-    if (problem.isGoal(state)) return;
+    if (problem.isGoal(state)) {
+      if (problem.formatSolution) {
+        metrics.recordSolution(problem.formatSolution(state));
+      }
+      return;
+    }
 
     const nextStates = algorithm.nextStates(problem, state, () => {
       metrics.recordPruned();
-      ctx.save();
-      ctx.translate(offsetX, 0);
-      ctx.fillStyle = "rgba(255,0,0,0.12)";
-      ctx.fillRect(0, 0, width, ctx.canvas.height);
-      ctx.restore();
     });
 
     for (const next of nextStates) {
-      await recurse(problem, next, depth + 1);
+      await recurse(problem, next);
     }
   }
 
   return {
     run(problem) {
-      recurse(problem, problem.initialState());
+      recurse(problem, problem.initialState()).then(() => {
+        if (metrics.solutions.length > 0) {
+          ui.liveExplain.innerHTML =
+            "<strong>Solutions:</strong><br>" +
+            metrics.solutions
+              .map((s, i) => `#${i + 1}: ${s}`)
+              .join("<br>");
+        }
+      });
     },
     stop() { stopped = true; },
     pause() { paused = true; },

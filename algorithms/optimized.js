@@ -1,20 +1,15 @@
 export default {
-  name: "Optimized DFS",
-
-  description:
-    "This method is smarter. Before going deeper, it checks if a choice is already wrong. If it is wrong, it stops early and does not continue that path.",
-
+  name: "Optimized",
+  description: "Avoids choices that are already known to be wrong.",
   nextStates(problem, state, onPrune) {
     let states = problem.getNextStates(state);
-
     if (problem.prune) {
       states = states.filter(s => {
-        const badChoice = problem.prune(s);
-        if (badChoice) onPrune?.();
-        return !badChoice;
+        const bad = problem.prune(s);
+        if (bad && onPrune) onPrune();
+        return !bad;
       });
     }
-
     return states;
   }
 };

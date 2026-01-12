@@ -2,7 +2,7 @@ export default {
   name: "Handshakes",
 
   description:
-    "Everyone must shake hands with everyone else one time. If the same handshake happens twice, that path is wrong.",
+    "Everyone must shake hands with everyone else exactly once. Repeating a handshake is invalid.",
 
   useVisited: true,
 
@@ -29,18 +29,15 @@ export default {
       for (let j = i + 1; j < s.people; j++) {
         const key = `${i},${j}`;
         if (!done.has(key)) {
-          next.push({
-            ...s,
-            handshakes: [...s.handshakes, [i, j]]
-          });
+          next.push({ ...s, handshakes: [...s.handshakes, [i, j]] });
         }
       }
     }
     return next;
   },
 
-  liveExplanation(state) {
-    return `Handshakes done so far: ${state.handshakes.length}`;
+  liveExplanation(s) {
+    return `Handshakes completed so far: ${s.handshakes.length}.`;
   },
 
   renderState(s, ctx) {

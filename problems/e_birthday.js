@@ -1,15 +1,8 @@
-// Birthday Assignment Problem
-// ---------------------------
-// Assign unique birthdays to people.
-// If two people share a birthday, the state is invalid.
-//
-// This demonstrates constraint satisfaction and pruning.
-
 export default {
   name: "Birthday Assignment",
 
   description:
-    "Birthdays are assigned one person at a time. States that contain duplicate birthdays are pruned early.",
+    "Each person is assigned a birthday. Brute force allows duplicates; optimized avoids assigning the same day twice.",
 
   useVisited: false,
 
@@ -22,7 +15,7 @@ export default {
   },
 
   prune(s) {
-    // If duplicates exist, stop exploring this path
+    // Optimized only: duplicate birthdays are invalid
     return new Set(s.birthdays).size !== s.birthdays.length;
   },
 
@@ -38,22 +31,37 @@ export default {
     return next;
   },
 
-  liveExplanation(state) {
-    return `Assigned birthdays to ${state.birthdays.length} person(s). Checking for duplicates.`;
+  liveExplanation(s) {
+    return `Assigned birthdays to ${s.birthdays.length} people.`;
+  },
+
+  formatSolution(s) {
+    return s.birthdays
+      .map((d, i) => `P${i}→D${d}`)
+      .join(", ");
   },
 
   renderState(s, ctx) {
     s.birthdays.forEach((day, i) => {
       const x = 120 + i * 180;
       const y = 220;
+
       ctx.beginPath();
       ctx.arc(x, y, 30, 0, Math.PI * 2);
+
+      // highlight most recent assignment
+      ctx.strokeStyle =
+        i === s.birthdays.length - 1 ? "red" : "black";
+      ctx.lineWidth =
+        i === s.birthdays.length - 1 ? 3 : 1;
+
       ctx.fillStyle = "lightblue";
       ctx.fill();
       ctx.stroke();
+
       ctx.fillStyle = "black";
       ctx.fillText(`P${i}`, x - 10, y - 40);
-      ctx.fillText(`D${day}`, x - 10, y + 5);
+      ctx.fillText(`D${day}`, x - 12, y + 5);
     });
   }
 };
